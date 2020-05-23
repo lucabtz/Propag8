@@ -16,4 +16,4 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-PROPAG8_VERSION = '0.0.1'
+PROPAG8_VERSION = '0.0.2'

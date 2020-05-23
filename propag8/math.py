@@ -21,9 +21,28 @@ from .measure import Measure
 
 import math
 
+class QuadraticSolution(object):
+    def __init__(self, x1, x2):
+        self.x1 = x1
+        self.x2 = x2
+
+    def get_greater_solution(self):
+        return self.x1 if self.x1 >= self.x2 else self.x2
+
+    def get_least_solution(self):
+        return self.x2 if self.x1 >= self.x2 else self.x2
+
 @override_math_function(math.sqrt)
 def sqrt(x):
     return x ** (0.5)
+
+def solve_quadratic(a, b, c):
+    delta = b**2 - 4*a*c
+    if delta < 0:
+        raise ValueError(f'Equation delta is negative: no solution to {a}x^2 + {b}x + {c} = 0')
+    x1 = (b**2 + sqrt(delta)) / (2*a)
+    x2 = (b**2 - sqrt(delta)) / (2*a)
+    return QuadraticSolution(x1, x2)
 
 @override_math_function(math.exp)
 def exp(x):
@@ -76,3 +95,7 @@ def atanh(x):
 @override_math_function(math.log)
 def log(x):
     return Measure(math.log(x.val), abs(1/x.val) * x.err)
+
+@override_math_function(math.fabs)
+def fabs(x):
+    return abs(x)

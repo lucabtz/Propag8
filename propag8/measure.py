@@ -72,5 +72,36 @@ class Measure(object):
     def __pow__(self, pow):
         return Measure(self.val ** pow, abs(pow * (self.val ** (pow - 1))) * self.err)
 
+    def __abs__(self):
+        return Measure(abs(self.val), self.err)
+
+    def __lt__(self, other):
+        if isinstance(other, Measure):
+            return self.val < other.val
+        elif isinstance(other, numbers.Real):
+            return self.val < other
+        raise TypeError(f'Unsupported operand type {type(other)}')
+
+    def __le__(self, other):
+        if isinstance(other, Measure):
+            return self.val <= other.val
+        elif isinstance(other, numbers.Real):
+            return self.val <= other
+        raise TypeError(f'Unsupported operand type {type(other)}')
+
+    def __gt__(self, other):
+        if isinstance(other, Measure):
+            return self.val > other.val
+        elif isinstance(other, numbers.Real):
+            return self.val > other
+        raise TypeError(f'Unsupported operand type {type(other)}')
+
+    def __ge__(self, other):
+        if isinstance(other, Measure):
+            return self.val >= other.val
+        elif isinstance(other, numbers.Real):
+            return self.val >= other
+        raise TypeError(f'Unsupported operand type {type(other)}')
+
     def __str__(self):
         return f'({self.val} +/- {self.err})'
