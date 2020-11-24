@@ -120,7 +120,10 @@ class StatisticalMeasure(object):
         return math.sqrt(self.variance)
 
     def to_measure(self, coverage_factor):
-        return Mesaure(self.val, coverage_factor * self.get_standard_deviation())
+        return Measure(self.val, coverage_factor * self.get_standard_deviation())
+
+    def with_added_deviation(self, deviation):
+        return StatisticalMeasure(self.val, self.variance + deviation * deviation)
 
     @staticmethod
     def from_sample(sample):
@@ -129,18 +132,22 @@ class StatisticalMeasure(object):
         mean_variance = variance / len(sample)
         return StatisticalMeasure(mean, mean_variance)
 
+    @staticmethod
+    def from_mean_and_deviation(mean, deviation):
+        return StatisticalMeasure(mean, deviation * deviation)
+
     def __add__(self, other):
         if isinstance(other, StatisticalMeasure):
             return StatisticalMeasure(self.val + other.val, self.variance + other.variance)
         elif isinstance(other, numbers.Real):
-            return Mesaure(self.val + other, self.variance)
+            return StatisticalMesaure(self.val + other, self.variance)
         raise TypeError(f'Unsupported operand type {type(other)}')
 
     def __sub__(self, other):
         if isinstance(other, StatisticalMeasure):
-            return Measure(self.val - other.val, self.variance + other.variance)
+            return StatisticalMeasure(self.val - other.val, self.variance + other.variance)
         elif isinstance(other, numbers.Real):
-            return Measure(self.val - other, self.variance)
+            return StatisticalMeasure(self.val - other, self.variance)
         raise TypeError(f'Unsupported operand type {type(other)}')
 
     def __mul__(self, other):
@@ -160,7 +167,7 @@ class StatisticalMeasure(object):
         return StatisticalMeasure(res, variance)
 
     def __neg__(self):
-        return Measure(-self.val, self.variance)
+        return StatisticalMeasure(-self.val, self.variance)
 
     def __truediv__(self, other):
         if isinstance(other, StatisticalMeasure):
