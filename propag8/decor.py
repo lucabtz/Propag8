@@ -19,6 +19,8 @@
 from .measure import Measure, StatisticalMeasure
 from .derivative import calculate_gradient
 
+import numpy as np
+
 def override_math_function(func):
     def decorator(wrapped):
         def wrapper(x):
@@ -29,7 +31,7 @@ def override_math_function(func):
                 value, derivative = wrapped(x)
                 return StatisticalMeasure(value, derivative * derivative * x.variance)
             return func(x)
-        return wrapper
+        return np.vectorize(wrapper)
     return decorator
 
 def propagate_with_partial(num_args):
