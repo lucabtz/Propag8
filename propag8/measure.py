@@ -22,7 +22,7 @@ import statistics
 
 class Measure(object):
     def __init__(self, val, err):
-        if err <= 0:
+        if err < 0:
             raise ValueError('Uncertainty cannot be negative')
         self.val = val
         self.err = err
@@ -111,7 +111,7 @@ class Measure(object):
 
 class StatisticalMeasure(object):
     def __init__(self, val, variance):
-        if variance <= 0:
+        if variance < 0:
             raise ValueError('Variance cannot be negative')
         self.val = val
         self.variance = variance
