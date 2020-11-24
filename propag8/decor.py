@@ -16,14 +16,18 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-from .measure import Measure
+from .measure import Measure, StatisticalMeasure
 from .derivative import calculate_gradient
 
 def override_math_function(func):
     def decorator(wrapped):
         def wrapper(x):
             if isinstance(x, Measure):
-                return wrapped(x)
+                value, derivative = wrapped(x)
+                return Measure(value, abs(derivative) * x.err)
+            elif isinstance(x, StatisticalMeasure):
+                value, derivative = wrapped(x)
+                return StatisticalMeasure(value, derivative * derivative * x.variance)
             return func(x)
         return wrapper
     return decorator
@@ -31,11 +35,21 @@ def override_math_function(func):
 def propagate_with_partial(num_args):
     def decorator(func):
         def wrapper(*args):
-            vals = tuple([args[i].val for i in range(0, num_args)])
-            partials = calculate_gradient(func, vals, num_args)
-            err = 0
-            for i in range(0, num_args):
-                err += (abs(partials[i]) * args[i].err)
-            return Measure(func(*vals), err)
+            if all([isinstance(arg, Measure) for arg in args]):
+                vals = tuple([args[i].val for i in range(0, num_args)])
+                partials = calculate_gradient(func, vals, num_args)
+                err = 0
+                for i in range(0, num_args):
+                    err += (abs(partials[i]) * args[i].err)
+                return Measure(func(*vals), err)
+            elif all([isinstance(arg, StatisticalMeasure) for arg in args]):
+                vals = tuple([args[i].val for i in range(0, num_args)])
+                partials = calculate_gradient(func, vals, num_args)
+                variance = 0
+                for i in range(0, num_args):
+                    variance += (partials[i] * partials[i] * args[i].variance)
+                return Measure(func(*vals), variance)
+            else:
+                return func(*args)
         return wrapper
     return decorator

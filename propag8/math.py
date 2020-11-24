@@ -46,55 +46,55 @@ def solve_quadratic(a, b, c):
 
 @override_math_function(math.exp)
 def exp(x):
-    return Measure(math.exp(x.val), (math.exp(x.val)) * x.err)
+    return math.exp(x.val), math.exp(x.val)
 
 @override_math_function(math.cos)
 def cos(x):
-    return Measure(math.cos(x.val), abs(math.sin(x.val)) * x.err)
+    return math.cos(x.val), math.sin(x.val)
 
 @override_math_function(math.sin)
 def sin(x):
-    return Measure(math.sin(x.val), abs(math.cos(x.val)) * x.err)
+    return math.sin(x.val), math.cos(x.val)
 
 @override_math_function(math.tan)
 def tan(x):
-    return Measure(math.tan(x.val), (1 / (math.cos(x.val) ** 2)) * x.err)
+    return math.tan(x.val), 1 / (math.cos(x.val) ** 2)
 
 @override_math_function(math.acos)
 def acos(x):
-    return Measure(math.acos(x.val), (1 / math.sqrt(1 - x.val * x.val)) * x.err)
+    return math.acos(x.val), 1 / math.sqrt(1 - x.val * x.val)
 
 @override_math_function(math.asin)
 def asin(x):
-    return Measure(math.asin(x.val), (1 / math.sqrt(1 - x.val * x.val)) * x.err)
+    return math.asin(x.val), 1 / math.sqrt(1 - x.val * x.val)
 
 @override_math_function(math.atan)
 def atan(x):
-    return Measure(math.atan(x.val), (1/(1 + x.val * x.val)) * x.err)
+    return math.atan(x.val), 1 / (1 + x.val * x.val)
 
 @override_math_function(math.cosh)
 def cosh(x):
-    return Measure(math.cosh(x.val), abs(math.sinh(x.val)) * x.err)
+    return math.cosh(x.val), math.sinh(x.val)
 
 @override_math_function(math.sinh)
 def sinh(x):
-    return Measure(math.sinh(x.val), abs(math.cosh(x.val)) * x.err)
+    return math.sinh(x.val), math.cosh(x.val)
 
 @override_math_function(math.acosh)
 def acosh(x):
-    return Measure(math.acosh(x.val), ((1/math.sqrt(x.val - 1)) * (1/math.sqrt(x.val + 1))) * x.err)
+    return math.acosh(x.val), ((1/math.sqrt(x.val - 1)) * (1/math.sqrt(x.val + 1)))
 
 @override_math_function(math.asinh)
 def asinh(x):
-    return Measure(math.asinh(x.val), (1/math.sqrt(1 + x.val * x.val)) * x.err)
+    return math.asinh(x.val), (1/math.sqrt(1 + x.val * x.val))
 
 @override_math_function(math.atanh)
 def atanh(x):
-    return Measure(math.atanh(x.val), abs(1/(1 - x.val * x.val)) * x.err)
+    return math.atanh(x.val), 1/(1 - x.val * x.val)
 
 @override_math_function(math.log)
 def log(x):
-    return Measure(math.log(x.val), abs(1/x.val) * x.err)
+    return math.log(x.val), 1/x.val
 
 @override_math_function(math.fabs)
 def fabs(x):
