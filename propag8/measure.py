@@ -34,7 +34,7 @@ class Measure(object):
         if isinstance(other, Measure):
             return Measure(self.val + other.val, self.err + other.err)
         elif isinstance(other, numbers.Real):
-            return Mesaure(self.val + other, self.err)
+            return Measure(self.val + other, self.err)
         raise TypeError(f'Unsupported operand type {type(other)}')
 
     def __sub__(self, other):
