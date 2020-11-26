@@ -28,6 +28,7 @@ def print_array(array):
 values = np.vectorize(lambda x: x.val)
 errors = np.vectorize(lambda x: x.err)
 variances = np.vectorize(lambda x: x.variance)
+deviations = np.vectorize(lambda x: x.get_standard_deviation())
 
 def to_measure(k):
     return np.vectorize(lambda x: x.to_measure(k))

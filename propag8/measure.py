@@ -20,12 +20,33 @@ import math
 import numbers
 import statistics
 
+def _find_first_non_zero_digit(number):
+    first_non_zero = 0
+    if number < 1:
+        while number < 1:
+            number *= 10
+            first_non_zero -= 1
+        return first_non_zero
+    elif number >= 10:
+        while number > 1:
+            number /= 10
+            first_non_zero += 1
+        return first_non_zero
+    return 0
+
 class Measure(object):
     def __init__(self, val, err):
         if err < 0:
             raise ValueError('Uncertainty cannot be negative')
         self.val = val
         self.err = err
+
+    @staticmethod
+    def from_relative_error(val, relative, digits=0):
+        err = val * relative
+        if digits:
+            err += digits * 10 ** (_find_first_non_zero_digit(err))
+        return Measure(val, err)
 
     def get_relative_error(self):
         return self.err / self.val
