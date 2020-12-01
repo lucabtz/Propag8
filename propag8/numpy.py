@@ -20,6 +20,8 @@
 
 import numpy as np
 
+from .measure import Measure, StatisticalMeasure
+
 to_string = np.vectorize(str)
 
 def print_array(array):
@@ -30,15 +32,22 @@ errors = np.vectorize(lambda x: x.err)
 variances = np.vectorize(lambda x: x.variance)
 deviations = np.vectorize(lambda x: x.get_standard_deviation())
 
+
 def to_measure(k):
     return np.vectorize(lambda x: x.to_measure(k))
 
-def unpack_into_values_errors_array(data):
+def unpack_value_error(data):
     data_values = values(data)
     data_errors = errors(data)
     return data_values, data_errors
 
-def unpack_into_values_variances_array(data):
+def unpack_value_variance(data):
     data_values = values(data)
     data_variances = variances(data)
     return data_values, data_variances
+
+def pack_value_error(values, errors):
+    return np.array([Measure(val, err) for val, err in zip(values, errors)])
+
+def pack_value_variance(values, variances):
+    return np.array([StatisticalMeasure(val, variances) for val, variance in zip(values, variances)])
